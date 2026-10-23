@@ -67,6 +67,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .day-head { margin: 22px 0 6px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; }
 .day-head h2 { font-size: 2rem; text-transform: uppercase; }
 .day-head p { margin: 0; color: var(--muted); }
+.musc { margin: 0 0 14px; font-weight: 600; color: var(--accent); }
 
 .list { display: grid; gap: 16px; margin: 0; padding: 0; list-style: none; counter-reset: ex; }
 .ex {
@@ -108,7 +109,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 <div class="wrap">
   <header>
     <h1>Treino Full Body com Halteres</h1>
-    <p class="lede">Nível intermediário, corpo inteiro em toda sessão. Treine 3x por semana em dias alternados (seg/qua/sex) girando Treino 1 → 2 → 3. Para treinar 4x, siga a sequência sem repetir o mesmo treino em dias seguidos.</p>
+    <p class="lede">Nível intermediário. <b>Em todo treino você trabalha todos os músculos</b>: pernas, peito, costas, ombros, bíceps, tríceps, panturrilha e abdômen. Os 3 treinos só variam os exercícios. Treine 3x por semana em dias alternados (seg/qua/sex) girando Treino 1 → 2 → 3. Para treinar 4x, siga a sequência sem repetir o mesmo treino em dias seguidos.</p>
     <a class="pdf" href="Treino_Full_Body_Halteres.pdf" target="_blank" rel="noopener">📄 Abrir o PDF completo (passo a passo detalhado)</a>
     <ul class="rules">
       <li><b>Descanso</b>60–90 s nos exercícios grandes, 45–60 s nos pequenos.</li>
@@ -119,18 +120,13 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   </header>
 
   <nav class="tabs" role="tablist" aria-label="Treinos">
-    <button class="tab" role="tab" id="tab-A" data-day="A" aria-selected="true">Treino 1<small>peito e quadríceps</small></button>
-    <button class="tab" role="tab" id="tab-B" data-day="B" aria-selected="false">Treino 2<small>costas e posterior</small></button>
-    <button class="tab" role="tab" id="tab-C" data-day="C" aria-selected="false">Treino 3<small>ombro e braço</small></button>
+    <button class="tab" role="tab" id="tab-A" data-day="A" aria-selected="true">Treino 1<small>corpo inteiro</small></button>
+    <button class="tab" role="tab" id="tab-B" data-day="B" aria-selected="false">Treino 2<small>corpo inteiro</small></button>
+    <button class="tab" role="tab" id="tab-C" data-day="C" aria-selected="false">Treino 3<small>corpo inteiro</small></button>
   </nav>
 
   <section id="day" role="tabpanel" aria-live="polite"></section>
 
-  <section class="extras">
-    <h2>Panturrilha e abdômen</h2>
-    <p class="lede" style="margin-bottom:12px">No fim de qualquer treino, 2 a 3 vezes por semana.</p>
-    <ol class="list" id="extras"></ol>
-  </section>
 
   <section class="prog">
     <h2>Como progredir</h2>
@@ -149,7 +145,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 <script>
 const BANCO = { reto: "Banco reto", inc: "Banco 45°", alto: "Encosto alto (90°)", none: "Sem banco" };
 const DAYS = {
-  A: { foco: "Foco em peito e quadríceps", ex: [
+  A: { foco: "Corpo inteiro", musc: "Pernas · Peito · Costas · Ombros · Bíceps · Tríceps · Panturrilha · Abdômen", ex: [
     { id: "Goblet_Squat", nome: "Agachamento goblet", sets: "4 × 10–15", banco: "none",
       dicas: ["Segure 1 halter em pé, colado no peito", "Desça entre as pernas com peito alto e costas retas", "Suba empurrando o chão com o pé inteiro"],
       obs: "A foto usa kettlebell. Segure o halter na vertical pela cabeça de cima." },
@@ -167,7 +163,7 @@ const DAYS = {
       dicas: ["Segure 1 halter com as duas mãos acima da cabeça", "Desça atrás da cabeça dobrando só o cotovelo", "Cotovelos apontando para frente, sem abrir"],
       obs: "A foto mostra em pé. Pode fazer sentado no banco com encosto alto." }
   ]},
-  B: { foco: "Foco em costas e posterior", ex: [
+  B: { foco: "Corpo inteiro", musc: "Pernas · Peito · Costas · Ombros · Bíceps · Tríceps · Panturrilha · Abdômen", ex: [
     { id: "Split_Squat_with_Dumbbells", nome: "Agachamento búlgaro", sets: "3 × 8–12 cada perna", banco: "reto",
       dicas: ["Peito do pé de trás apoiado no banco", "Desça reto até o joelho de trás quase tocar o chão", "Força na perna da frente para subir"] },
     { id: "Incline_Dumbbell_Press", nome: "Supino inclinado com halteres", sets: "4 × 8–12", banco: "inc",
@@ -182,9 +178,11 @@ const DAYS = {
     { id: "Straight-Arm_Dumbbell_Pullover", nome: "Pullover com halter", sets: "3 × 10–12", banco: "reto",
       dicas: ["Deitado, segure 1 halter com as duas mãos acima do peito", "Leve para trás da cabeça com os braços quase retos", "Volte puxando com as costas e o peito"] },
     { id: "Hammer_Curls", nome: "Rosca martelo", sets: "3 × 10–12", banco: "none",
-      dicas: ["Palmas viradas uma para a outra o tempo todo", "Cotovelos parados ao lado do corpo", "Suba e desça controlando o peso"] }
+      dicas: ["Palmas viradas uma para a outra o tempo todo", "Cotovelos parados ao lado do corpo", "Suba e desça controlando o peso"] },
+    { id: "Tricep_Dumbbell_Kickback", nome: "Tríceps coice (kickback)", sets: "3 × 12–15 cada braço", banco: "reto",
+      dicas: ["Joelho e mão apoiados no banco, braço colado ao corpo e paralelo ao chão", "Estique o braço para trás mexendo só o antebraço", "Aperte o tríceps 1 s e volte devagar até 90°"] }
   ]},
-  C: { foco: "Foco em ombro e braço", ex: [
+  C: { foco: "Corpo inteiro", musc: "Pernas · Peito · Costas · Ombros · Bíceps · Tríceps · Panturrilha · Abdômen", ex: [
     { id: "Dumbbell_Lunges", nome: "Afundo (passada)", sets: "3 × 10–12 cada perna", banco: "none",
       dicas: ["Dê um passo à frente com um halter em cada mão", "Desça até os dois joelhos ficarem a 90°", "Empurre com a perna da frente para voltar"] },
     { id: "Kettlebell_One-Legged_Deadlift", nome: "Stiff unilateral (uma perna)", sets: "3 × 10 cada perna", banco: "none",
@@ -216,6 +214,11 @@ const EXTRAS = [
     dicas: ["Apoio nos antebraços e pontas dos pés", "Corpo reto, sem empinar nem cair o quadril", "Aperte abdômen e glúteo"] }
 ];
 
+const CORE = { A: "Crunches", B: "Flat_Bench_Lying_Leg_Raise", C: "Plank" };
+for (const k of Object.keys(DAYS)) {
+  DAYS[k].ex.push(EXTRAS.find(x => x.id === "Standing_Dumbbell_Calf_Raise"), EXTRAS.find(x => x.id === CORE[k]));
+}
+
 function esc(s) { return s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
 function card(e, i) {
   const q = encodeURIComponent(e.nome + " com halteres execução correta");
@@ -238,6 +241,7 @@ function show(day) {
   const d = DAYS[day];
   document.getElementById("day").innerHTML =
     `<div class="day-head"><h2>Treino ${ {A:1,B:2,C:3}[day] } · Dia ${ {A:1,B:2,C:3}[day] }</h2><p>${d.foco} · ${d.ex.length} exercícios</p></div>
+     <p class="musc">✓ ${d.musc}</p>
      <ol class="list">${d.ex.map(card).join("")}</ol>`;
   try { localStorage.setItem("treino-dia", day); } catch (_) {}
 }
@@ -246,7 +250,6 @@ document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () =>
   const day = document.getElementById("day");
   if (day.getBoundingClientRect().top < 0) day.scrollIntoView({ block: "start" });
 }));
-document.getElementById("extras").innerHTML = EXTRAS.map(card).join("");
 let start = "A";
 const h = (location.hash || "").replace("#", "").toUpperCase();
 if (DAYS[h]) start = h; else { try { const s = localStorage.getItem("treino-dia"); if (DAYS[s]) start = s; } catch (_) {} }
