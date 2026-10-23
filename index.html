@@ -3,7 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Treino Full Body Halteres</title>
+<title>VemVerão</title>
+<meta name="theme-color" content="#1f5fa8">
+<meta name="description" content="Treino full body com halteres: todos os músculos em todo treino.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/favicon.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="VemVerão">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap">
 <style>
@@ -43,6 +52,8 @@ body {
 }
 h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.05; }
 h1 { font-size: clamp(2.2rem, 7vw, 3.4rem); font-weight: 800; text-transform: uppercase; letter-spacing: .01em; }
+.sub { margin: 4px 0 0; font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--accent); }
+.install { display: inline-block; margin: 14px 0 0 8px; border: 2px solid var(--accent); background: transparent; color: var(--accent); font: inherit; font-weight: 600; padding: 8px 14px; border-radius: 8px; cursor: pointer; }
 .lede { color: var(--muted); max-width: 62ch; margin: 8px 0 0; }
 .rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin: 20px 0 0; padding: 0; list-style: none; }
 .rules li { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; font-size: .92rem; }
@@ -108,9 +119,11 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 
 <div class="wrap">
   <header>
-    <h1>Treino Full Body com Halteres</h1>
+    <h1>VemVerão</h1>
+    <p class="sub">Treino full body com halteres</p>
     <p class="lede">Nível intermediário. <b>Em todo treino você trabalha todos os músculos</b>: pernas, peito, costas, ombros, bíceps, tríceps, panturrilha e abdômen. Os 3 treinos só variam os exercícios. Treine 3x por semana em dias alternados (seg/qua/sex) girando Treino 1 → 2 → 3. Para treinar 4x, siga a sequência sem repetir o mesmo treino em dias seguidos.</p>
     <a class="pdf" href="Treino_Full_Body_Halteres.pdf" target="_blank" rel="noopener">📄 Abrir o PDF completo (passo a passo detalhado)</a>
+    <button class="install" id="install" type="button" hidden>📲 Instalar app</button>
     <ul class="rules">
       <li><b>Descanso</b>60–90 s nos exercícios grandes, 45–60 s nos pequenos.</li>
       <li><b>Intensidade</b>Termine cada série deixando 1–2 repetições "no tanque".</li>
@@ -254,6 +267,26 @@ let start = "A";
 const h = (location.hash || "").replace("#", "").toUpperCase();
 if (DAYS[h]) start = h; else { try { const s = localStorage.getItem("treino-dia"); if (DAYS[s]) start = s; } catch (_) {} }
 show(start);
+
+// PWA: funciona sem internet e pode ser instalado no celular.
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+}
+let installPrompt = null;
+const installBtn = document.getElementById("install");
+window.addEventListener("beforeinstallprompt", ev => {
+  ev.preventDefault();
+  installPrompt = ev;
+  installBtn.hidden = false;
+});
+installBtn.addEventListener("click", async () => {
+  if (!installPrompt) return;
+  installPrompt.prompt();
+  await installPrompt.userChoice;
+  installPrompt = null;
+  installBtn.hidden = true;
+});
+window.addEventListener("appinstalled", () => { installBtn.hidden = true; });
 </script>
 
 </body>
